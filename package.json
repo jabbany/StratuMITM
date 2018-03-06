@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/jabbany/StratuMITM/issues"
   },
-  "homepage": "https://github.com/jabbany/StratuMITM#readme"
+  "homepage": "https://github.com/jabbany/StratuMITM#readme",
+  "dependencies": {
+    "colors": "^1.1.2"
+  }
 }

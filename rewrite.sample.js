@@ -1,33 +1,53 @@
-// Here's some config
-var config = {
-  'username': 't1XGaKKKPnb7UmNJTzH37yN4DoU49SKePk9.pleaseDonate', // This is the developer's zec donation wallet, please replace with your own!
-  'password': 'x' // Some pools use 'y' :)
-}
+// This is the basic rewriter to replace the login information
+var SingleMITMRewriter = (function (){ 
+  var SingleMITMRewriter = function (config, delegator, logger) {
+    this._config = config;
+    this._delegator = delegator;
+    this._logger = logger;
+    this._msgLogger = logger.part('MESSAGES');
+    this._clients = [];
+  };
 
-// Specify what the current rewriter's method of rewriting is (sync, async). Changes API
-exports.rewriteMode = 'sync';
+  SingleMITMRewriter.prototype.clientConnect = function (clientName) {
+    this._clients.push(clientName);
+    if (this._clients.length > 1) {
+      this._logger.warn('You are using forward mode with more than one client! This is NOT supported.');
+    }
+    if (this._config.log === 'all') {
+      this._logger.log('Client ' + clientName + ' connected.');
+    }
+  };
 
-// Rewrite a message being sent
-exports.rewriteLocal = function (message) {
-  switch (message.method) {
-    case 'mining.authorize':
-      // Here we are going to be sneaky and replace this with our own user and password
-      message.params = [config.username, config.password];
-      break;
-    case 'mining.subscribe':
-      // Let's not be sneaky and replace with ourselves as the client
-      // Of course, you can be sneaky why not
-      message.params = ['StratuMITM/0.1.0', "Not Actually A Nonce"];
-      break;
-  }
-  // Other kinds of messages we can leave verbatim
-  return message;
-}
+  SingleMITMRewriter.prototype.clientDisconnect = function (clientName) {
+    var clientIndex = this._clients.indexOf(clientName);
+    if (clientIndex >= 0) {
+      this._clients.splice(clientIndex, 1);
+    }
+    if (this._config.log === 'all') {
+      this._logger.log('Client ' + clientName + ' disconnected.');
+    }
+  };
 
-// Rewrite a message being recieved
-exports.rewriteRemote = function (message) {
-  // Don't do this, since we just want to pass the pools' messages through verbatim
-  // This can be useful if you client somehow vaildates pool messages and so you 
-  // can trick the client into thinking it's on the 'right pool'. You'll need to do your own work here.
-  return message;
-}
+  SingleMITMRewriter.prototype.clientMessage = function (clientName, message) {
+    if (this._clients.indexOf(client) < 0) {
+      this._logger.warn('Client ' + clientName + ' not registered. Dropping message');
+    }
+    if (this._config.log === 'all' || this._config.log === 'messages') {
+      this._msgLogger.part(clientName).log(message);
+    }
+    this._delegator.sendServer(message);
+  };
+
+  SingleMITMRewriter.prototype.serverMessage = function (message) {
+    if (this._config.log === 'all' || this._config.log === 'messages') {
+      this._msgLogger.part('SERVER').log(message);
+    }
+    for (var i = 0; i < this._clients.length; i++) {
+      this._delegator.sendClient(this._clients[i], message);
+    }
+  };
+
+  return SingleMITMRewriter;
+})();
+
+exports.Rewriter = SingleMITMRewriter;

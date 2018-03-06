@@ -1,12 +1,12 @@
 {
   "ports": [8008, 3333, 1333, 6666],
-  "remote": {
-    "host": "192.99.37.89",
-    "port": 8008,
-    "retry": 0
-  },
   "rewriter": "./lib/rewrite/forward.js",
   "params": {
-    "log": "all"
+    "log": "all",
+    "remote": {
+      "host": "192.99.37.89",
+      "port": 8008,
+      "retry": 0
+    }
   }
 }

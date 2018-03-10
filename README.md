@@ -19,6 +19,8 @@ yourself.
 While StratuMITM could be used nefariously (i.e. coercing a server behind a NAT you operate to produce results for you)
 we don't recommend using it for that.
 
+For details on some specific use case samples, read the items in [docs/cases/](docs/cases/).
+
 ## What about TLS?
 In many cases when you have local control over the configuration, you can just redirect the TCP connection to negotiate
 a TLS connection against the local server. If the miner does not perform certificate pinning, it won't know that

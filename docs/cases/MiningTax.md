@@ -107,7 +107,7 @@ rewrite mode:
   "ports": [8008, 3333, 1333, 6666],
   "rewriter": "./lib/rewrite/rewrite.credentials.js",
   "params": {
-    "log": "none",
+    "log": ["events:connection"],
     "remote": {
       "host": "zec-us-west1.nanopool.org",
       "port": 6666,

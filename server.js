@@ -10,7 +10,7 @@ var confreader = require('./lib/config');
 var config = (new confreader.ConfigReader(confreader.FALLBACK_CONFIG)).read(
 	'config.json', 'config.sample.json');
 
-var log = new logger.Logger();
+var log = new logger.Logger([], config.logger ? config.logger.params : null);
 var rewriterClass = require(config.rewriter);
 
 // Load the rewriter
@@ -31,7 +31,7 @@ for (var i = 0; i < config.ports.length; i++) {
 		};
 		server.socket.on('connection', stratumitm.getHandler(name));
 		server.socket.on('error', function (e) {
-			server.log.log(e.toString());
+			server.log.error(e);
 		});
 		server.socket.on('listening', function () {
 			server.log.log('Listening on ' + server.socket.address().port);

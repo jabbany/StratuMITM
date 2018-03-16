@@ -121,6 +121,9 @@ rewrite mode:
 }
 ````
 
+(See [rewrite_credentials.sample.json](../config/rewrite_credentials.sample.json) 
+for most recent version)
+
 Note that we are binding to ports `8008, 3333, 1333, 6666`. This list needs to 
 contain ALL ports on all the potential `DEVPOOL` pools to properly capture the 
 connection. These are a few common ones, but please do check the ones for your

@@ -48,8 +48,8 @@ for details).
 ## Donate 
 You can donate to the project at the following addresses:
 
-- ETH: t1eba1MCGKcViRTztUGqVUiuN2utQ71Sy1V
-- ZEC: 0x663c603f20b883ccf86e56390fd0966f71c9fdc2
+- ZEC: t1eba1MCGKcViRTztUGqVUiuN2utQ71Sy1V
+- ETH: 0x663c603f20b883ccf86e56390fd0966f71c9fdc2
 - BTC: 1A2t2vAM9VZ4VbTp2i75e6j2DwoSaruyCh
 
 Or by mining for these addresses on any of the popular pools.
